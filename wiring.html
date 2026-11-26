@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiring - DLMS 2-Way</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b12'/%3E%3Ctext x='32' y='41' font-family='monospace' font-size='22' font-weight='700' text-anchor='middle' fill='%2338bdf8'%3E2W%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#04060a; --line:rgba(255,255,255,.09);
+    --text:#e8edf6; --dim:#8592a6; --cyan:#38bdf8; --amber:#fbbf24; --violet:#c084fc;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100vh; color:var(--text);
+    font:15px/1.6 ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(90% 60% at 50% -10%, rgba(56,189,248,.10), transparent 60%),
+      radial-gradient(70% 50% at 90% 110%, rgba(192,132,252,.08), transparent 60%),
+      var(--bg);
+    padding:26px 18px 48px;
+  }
+  .wrap{max-width:940px;margin:0 auto}
+  header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:800 .95rem ui-monospace,Consolas,monospace;color:#04060a;background:linear-gradient(135deg,var(--cyan),#818cf8);box-shadow:0 10px 22px -10px rgba(56,189,248,.9)}
+  .name{font-weight:800;font-size:1.05rem}
+  .tag{font-size:.66rem;color:var(--dim);font-family:ui-monospace,Consolas,monospace}
+  .back{font:600 .7rem ui-monospace,Consolas,monospace;color:var(--cyan);text-decoration:none;border:1px solid rgba(56,189,248,.35);padding:7px 11px;border-radius:999px}
+  .card{background:linear-gradient(165deg,rgba(17,24,36,.94),rgba(7,11,18,.96));border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 14px;box-shadow:0 26px 60px -38px #000,inset 0 1px 0 rgba(255,255,255,.05)}
+  h1{margin:0 0 4px;font-size:1.8rem;letter-spacing:-.03em}
+  .sub{margin:0 0 18px;color:var(--dim);font-size:.86rem}
+  h2{margin:0 0 10px;font:700 .68rem ui-monospace,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+  h3{margin:16px 0 7px;font-size:.95rem;color:#dbe7f2}
+  p{margin:0 0 10px;color:#c6d0de;font-size:.86rem}
+  table{width:100%;border-collapse:collapse;font-size:.78rem;margin:0 0 8px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top}
+  th{color:var(--dim);font:600 .62rem ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
+  td:first-child{color:#dbe7f2}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:.76rem;color:#bfe8ff;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.16);padding:1px 4px;border-radius:4px}
+  .note{color:#d8c9a3;font-size:.8rem;border-left:2px solid var(--amber);padding-left:10px;margin:10px 0}
+  .badge{display:inline-block;font:700 .58rem ui-monospace,Consolas,monospace;letter-spacing:.08em;padding:3px 7px;border-radius:999px;color:var(--amber);border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.08)}
+  footer{margin-top:18px;text-align:center;color:var(--dim);font:600 .62rem ui-monospace,Consolas,monospace;letter-spacing:.06em}
+  footer a{color:#9fb4cc;text-decoration:none}
+  @media(max-width:640px){.card{padding:14px}h1{font-size:1.45rem}table{font-size:.72rem}th,td{padding:6px 5px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark">2W</div>
+      <div>
+        <div class="name">DLMS 2-Way</div>
+        <div class="tag">Wiring guide &middot; classic ESP32 &amp; ESP32-S3</div>
+      </div>
+    </div>
+    <a class="back" href="index.html">&larr; Installer</a>
+  </header>
+
+  <section class="card">
+    <h1>Exact wiring</h1>
+    <p class="sub">PCM1808 stereo ADC input, two PCM5102 DACs, SSD1306 OLED and EC11 encoder.</p>
+
+    <h2>Power and ground</h2>
+    <table>
+      <tr><th>Rail</th><th>Connect to</th></tr>
+      <tr><td>5 V, 2 A recommended</td><td>ESP32 <code>5V/VIN</code>, PCM1808 <code>VCC</code>, both PCM5102 <code>VIN</code></td></tr>
+      <tr><td>GND</td><td>ESP32, PCM1808, both PCM5102, OLED, encoder common</td></tr>
+      <tr><td>3.3 V</td><td>OLED <code>VCC</code>, PCM5102 <code>XSMT</code> (unmute)</td></tr>
+    </table>
+    <p class="note">Use one common ground. Keep I2S clocks short, add 100 nF + 10 uF at each codec, and keep DAC outputs away from the Wi-Fi antenna.</p>
+  </section>
+
+  <section class="card">
+    <h2>I2S0 &middot; PCM1808 input + woofer DAC</h2>
+    <table>
+      <tr><th>ESP32 signal</th><th>GPIO</th><th>PCM1808</th><th>PCM5102 #1 (woofer)</th></tr>
+      <tr><td>MCLK / SCKI</td><td><code>0</code></td><td><code>SCKI</code></td><td>-</td></tr>
+      <tr><td>BCK</td><td><code>26</code></td><td><code>BCK</code></td><td><code>BCK</code></td></tr>
+      <tr><td>LRCK</td><td><code>27</code></td><td><code>LRCK</code></td><td><code>LRCK</code></td></tr>
+      <tr><td>DIN (ESP32 RX)</td><td><code>33</code></td><td><code>DOUT</code></td><td>-</td></tr>
+      <tr><td>DOUT (ESP32 TX)</td><td><code>25</code></td><td>-</td><td><code>DIN</code></td></tr>
+    </table>
+
+    <h3>PCM1808 module</h3>
+    <table>
+      <tr><th>PCM1808 pin</th><th>Connect</th></tr>
+      <tr><td><code>VCC</code></td><td>5 V (or 3.3 V if your module is 3.3 V-only)</td></tr>
+      <tr><td><code>GND</code></td><td>Common GND</td></tr>
+      <tr><td><code>SCKI</code></td><td>GPIO0 (384 fs = 18.432 MHz)</td></tr>
+      <tr><td><code>BCK</code></td><td>GPIO26</td></tr>
+      <tr><td><code>LRCK</code></td><td>GPIO27</td></tr>
+      <tr><td><code>DOUT</code></td><td>GPIO33</td></tr>
+      <tr><td><code>DIN</code></td><td>Not connected</td></tr>
+      <tr><td><code>FMT</code></td><td>GND = I2S</td></tr>
+      <tr><td><code>MD0</code></td><td>GND</td></tr>
+      <tr><td><code>MD1</code></td><td>GND = slave mode</td></tr>
+    </table>
+
+    <h3>PCM5102 #1 (woofer)</h3>
+    <table>
+      <tr><th>PCM5102 pin</th><th>Connect</th></tr>
+      <tr><td><code>VIN</code></td><td>3.3 V or 5 V (module dependent)</td></tr>
+      <tr><td><code>GND</code></td><td>Common GND</td></tr>
+      <tr><td><code>BCK</code></td><td>GPIO26</td></tr>
+      <tr><td><code>LRCK</code></td><td>GPIO27</td></tr>
+      <tr><td><code>DIN</code></td><td>GPIO25</td></tr>
+      <tr><td><code>SCK</code></td><td>GND = internal PLL from BCK</td></tr>
+      <tr><td><code>FMT</code></td><td>GND = I2S</td></tr>
+      <tr><td><code>DEMP</code></td><td>GND = de-emphasis off</td></tr>
+      <tr><td><code>XSMT</code></td><td>3.3 V = unmuted</td></tr>
+      <tr><td><code>FLS</code></td><td>GND</td></tr>
+    </table>
+    <p class="note">GPIO0 is a boot strapping pin. PCM1808 <code>SCKI</code> is high impedance, so boot is normally fine. If your board loads the BOOT pin, remove that capacitor or use a PCM1808 module with its own oscillator and set <code>PIN_I2S0_MCLK</code> to <code>-1</code>.</p>
+  </section>
+
+  <section class="card">
+    <h2>I2S1 &middot; tweeter DAC</h2>
+    <table>
+      <tr><th>ESP32 signal</th><th>GPIO</th><th>PCM5102 #2 (tweeter)</th></tr>
+      <tr><td>BCK</td><td><code>14</code></td><td><code>BCK</code></td></tr>
+      <tr><td>LRCK</td><td><code>15</code></td><td><code>LRCK</code></td></tr>
+      <tr><td>DOUT</td><td><code>2</code></td><td><code>DIN</code></td></tr>
+    </table>
+    <p>PCM5102 #2: <code>SCK</code> &rarr; GND, <code>FMT</code> &rarr; GND, <code>DEMP</code> &rarr; GND, <code>XSMT</code> &rarr; 3.3 V, <code>FLS</code> &rarr; GND.</p>
+  </section>
+
+  <section class="card">
+    <h2>OLED and encoder</h2>
+    <table>
+      <tr><th>Signal</th><th>ESP32 GPIO</th><th>Notes</th></tr>
+      <tr><td>OLED SDA</td><td><code>21</code></td><td>I2C address <code>0x3C</code></td></tr>
+      <tr><td>OLED SCL</td><td><code>22</code></td><td>OLED VCC = 3.3 V</td></tr>
+      <tr><td>Encoder A</td><td><code>18</code></td><td>Internal pull-up</td></tr>
+      <tr><td>Encoder B</td><td><code>19</code></td><td>Internal pull-up</td></tr>
+      <tr><td>Encoder SW</td><td><code>23</code></td><td>Switch to GND; optional 100 nF to GND</td></tr>
+    </table>
+    <p>EC11 common (<code>C</code>) goes to GND. The push switch connects GPIO23 to GND when pressed.</p>
+  </section>
+
+  <section class="card">
+    <h2>ESP32-S3 N16R8 variant</h2>
+    <table>
+      <tr><th>Signal</th><th>Classic ESP32</th><th>ESP32-S3 N16R8</th></tr>
+      <tr><td>I2S0 MCLK</td><td>0</td><td><code>4</code></td></tr>
+      <tr><td>I2S0 BCK</td><td>26</td><td><code>5</code></td></tr>
+      <tr><td>I2S0 LRCK</td><td>27</td><td><code>6</code></td></tr>
+      <tr><td>I2S0 DIN (PCM1808 DOUT)</td><td>33</td><td><code>7</code></td></tr>
+      <tr><td>I2S0 DOUT (woofer PCM5102)</td><td>25</td><td><code>15</code></td></tr>
+      <tr><td>I2S1 BCK</td><td>14</td><td><code>16</code></td></tr>
+      <tr><td>I2S1 LRCK</td><td>15</td><td><code>17</code></td></tr>
+      <tr><td>I2S1 DOUT (tweeter)</td><td>2</td><td><code>18</code></td></tr>
+      <tr><td>OLED SDA</td><td>21</td><td><code>8</code></td></tr>
+      <tr><td>OLED SCL</td><td>22</td><td><code>9</code></td></tr>
+      <tr><td>Encoder A</td><td>18</td><td><code>10</code></td></tr>
+      <tr><td>Encoder B</td><td>19</td><td><code>11</code></td></tr>
+      <tr><td>Encoder SW</td><td>23</td><td><code>12</code></td></tr>
+    </table>
+    <p class="note">On N16R8, GPIO19/20 are native USB, GPIO26-32 are flash and GPIO33-37 are octal PSRAM. They are not used.</p>
+  </section>
+
+  <section class="card">
+    <h2>Final notes</h2>
+    <p>Both PCM5102 outputs are <b>line level</b> (~2 Vrms). Never connect them directly to a speaker. Use a power amplifier or active speakers.</p>
+    <p>If the I2S clocks ring or a DAC locks unreliably, add a <b>33-100 ohm</b> series resistor at the ESP32 end of MCLK/BCK/LRCK.</p>
+    <span class="badge">ESP32 / ESP32-S3</span>
+  </section>
+
+  <footer>
+    <a href="index.html">Back to installer</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/bytebleed2025-star/DLMS-2WAY-installer">Installer repository</a>
+  </footer>
+</div>
+</body>
+</html>
