@@ -1,0 +1,15 @@
+﻿{
+    "name":  "DLMS 2-Way - ESP32-S3 N16R8",
+    "version":  "1.0",
+    "builds":  [
+                   {
+                       "chipFamily":  "ESP32-S3",
+                       "parts":  [
+                                     {
+                                         "path":  "firmware/DLMS-2Way-S3-v1.0-factory.bin",
+                                         "offset":  0
+                                     }
+                                 ]
+                   }
+               ]
+}
