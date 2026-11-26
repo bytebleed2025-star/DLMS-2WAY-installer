@@ -133,7 +133,7 @@
         <div class="tag">ESP32 Dev by SHD 081261316988</div>
       </div>
     </div>
-    <span class="ver">v1.0</span>
+    <span class="ver" id="verBadge">v1.0</span>
   </header>
 
   <main>
@@ -192,5 +192,14 @@
 </div>
 
 <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+<script>
+  fetch("manifest.json")
+    .then(function (r) { return r.json(); })
+    .then(function (m) {
+      var badge = document.getElementById("verBadge");
+      if (badge && m.version) badge.textContent = "v" + m.version;
+    })
+    .catch(function () {});
+</script>
 </body>
 </html>
